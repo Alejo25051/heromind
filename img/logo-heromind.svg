@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Emblema de HeroMind">
+    <!-- Emblema de HeroMind: hexágono partido en azul (héroes) y rojo (villanos) con un rayo en el centro -->
+    <defs>
+        <clipPath id="interior">
+            <polygon points="60,16 98.1,38 98.1,82 60,104 21.9,82 21.9,38"/>
+        </clipPath>
+        <!-- Trama de puntos estilo cómic -->
+        <pattern id="puntos" width="6" height="6" patternUnits="userSpaceOnUse">
+            <circle cx="3" cy="3" r="1.1" fill="#ffffff" opacity="0.22"/>
+        </pattern>
+    </defs>
+
+    <!-- Hexágono exterior dorado -->
+    <polygon points="60,4 108.5,32 108.5,88 60,116 11.5,88 11.5,32" fill="#ffc93c" stroke="#0b0b12" stroke-width="6" stroke-linejoin="round"/>
+
+    <!-- Interior partido: héroes a la izquierda, villanos a la derecha -->
+    <g clip-path="url(#interior)">
+        <rect x="0" y="0" width="60" height="120" fill="#1f6feb"/>
+        <rect x="60" y="0" width="60" height="120" fill="#d62839"/>
+        <rect x="0" y="0" width="120" height="120" fill="url(#puntos)"/>
+    </g>
+    <polygon points="60,16 98.1,38 98.1,82 60,104 21.9,82 21.9,38" fill="none" stroke="#0b0b12" stroke-width="4" stroke-linejoin="round"/>
+
+    <!-- Rayo central -->
+    <polygon points="68,22 40,66 57,66 50,98 82,50 64,50 74,22" fill="#ffffff" stroke="#0b0b12" stroke-width="4" stroke-linejoin="round"/>
+</svg>

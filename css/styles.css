@@ -1,0 +1,668 @@
+/*
+ * Estilos generales de HeroMind y de la página de entrada (index.html)
+ * Estética de cómic: tinta negra, papel crema, trama de puntos y sombras desplazadas.
+ * juego.html carga también este archivo y le suma stylesjuego.css
+ */
+
+/* VARIABLES DE COLOR Y TIPOGRAFÍA */
+:root{
+    --tinta: #0b0b12;
+    --fondo: #121a30;
+    --fondo-claro: #1c2747;
+    --papel: #fff6e0;
+    --papel-oscuro: #f1e3bf;
+    --texto-papel-suave: #5b5544;
+    --heroe: #1f6feb;
+    --heroe-claro: #5aa2ff;
+    --villano: #d62839;
+    --villano-oscuro: #6a1b9a;
+    --oro: #ffc93c;
+    --exito: #2ec4b6;
+    --texto: #f4f1ea;
+    --texto-suave: #aab3cf;
+    --fuente-titulos: "Bangers", "Impact", "Arial Black", sans-serif;
+    --fuente-texto: "Barlow", "Segoe UI", system-ui, sans-serif;
+    --borde: 3px solid var(--tinta);
+    --radio: 12px;
+}
+
+/* BASE */
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--fuente-texto);
+    line-height: 1.45;
+    color: var(--texto);
+    background-color: var(--fondo);
+    /* Trama de puntos tipo cómic sobre dos brillos de color */
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.07) 1.2px, transparent 1.4px),
+        radial-gradient(circle at 12% 0%, rgba(31, 111, 235, 0.35), transparent 45%),
+        radial-gradient(circle at 92% 100%, rgba(214, 40, 57, 0.3), transparent 45%);
+    background-size: 14px 14px, 100% 100%, 100% 100%;
+    background-attachment: fixed;
+}
+img{
+    max-width: 100%;
+    display: block;
+}
+button,
+input{
+    font: inherit;
+}
+:focus-visible{
+    outline: 3px solid var(--oro);
+    outline-offset: 3px;
+}
+/* Texto que no se ve en pantalla pero sí leen los lectores de pantalla (por ejemplo, el h1 de juego.html) */
+.solo-lectores{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* MARCA (LOGO) */
+.marca{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: inherit;
+    text-decoration: none;
+}
+.marca-emblema{
+    width: 72px;
+    height: 72px;
+    filter: drop-shadow(4px 4px 0 var(--tinta));
+}
+.marca-nombre{
+    margin: 0;
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2.6rem, 7vw, 3.6rem);
+    letter-spacing: 2px;
+    line-height: 0.9;
+    color: var(--heroe-claro);
+    -webkit-text-stroke: 1.5px var(--tinta);
+    text-shadow: 3px 3px 0 var(--tinta);
+}
+.marca-nombre span{
+    color: var(--villano);
+}
+.marca-lema{
+    margin: 6px 0 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--oro);
+}
+
+/* CABECERA */
+.cabecera{
+    display: flex;
+    justify-content: center;
+    padding: 28px 16px 8px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.contenedor{
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 28px;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 16px 32px;
+    align-items: start;
+}
+
+/* PANELES (VIÑETAS DE CÓMIC) */
+.panel{
+    padding: 22px;
+    background: var(--papel);
+    color: var(--tinta);
+    border: var(--borde);
+    border-radius: var(--radio);
+    box-shadow: 7px 7px 0 var(--tinta);
+}
+.panel-formulario{
+    box-shadow: 8px 8px 0 var(--villano);
+}
+.panel-reglas{
+    box-shadow: 8px 8px 0 var(--heroe);
+}
+.panel-fama{
+    box-shadow: 8px 8px 0 var(--oro);
+}
+.panel-titulo{
+    display: inline-block;
+    margin: 0 0 16px;
+    padding: 2px 14px;
+    font-family: var(--fuente-titulos);
+    font-size: 1.8rem;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    background: var(--oro);
+    border: var(--borde);
+    box-shadow: 3px 3px 0 var(--tinta);
+    transform: rotate(-1.5deg);
+}
+
+/* CAMPOS DEL FORMULARIO */
+.campo{
+    min-width: 0;
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+}
+.etiqueta{
+    display: block;
+    margin-bottom: 8px;
+    padding: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.etiqueta small{
+    margin-left: 6px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--texto-papel-suave);
+}
+.entrada-texto{
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--tinta);
+    background: #ffffff;
+    border: var(--borde);
+    border-radius: 10px;
+}
+.entrada-texto:focus{
+    outline: none;
+    box-shadow: 0 0 0 4px var(--oro);
+}
+
+/* Opciones tipo botón (radios de dificultad y tarjetas) */
+.opciones{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+.opcion{
+    position: relative;
+    cursor: pointer;
+}
+.opcion input{
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.opcion span{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 8px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.15;
+    background: #ffffff;
+    border: var(--borde);
+    border-radius: 10px;
+    transition: transform 0.12s, background 0.12s, box-shadow 0.12s;
+}
+.opcion small{
+    font-size: 0.76rem;
+    font-weight: 600;
+    opacity: 0.75;
+}
+.opcion:hover span{
+    transform: translateY(-2px);
+}
+.opcion input:checked + span{
+    color: #ffffff;
+    background: var(--heroe);
+    box-shadow: 3px 3px 0 var(--tinta);
+}
+.opcion-baja input:checked + span{
+    background: #1a9c8f;
+}
+.opcion-alta input:checked + span{
+    background: var(--villano);
+}
+.opcion input:focus-visible + span{
+    outline: 3px solid var(--oro);
+    outline-offset: 2px;
+}
+
+/* AVATAR */
+.zona-avatar{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+}
+.avatar-elegido{
+    width: 136px;
+    padding: 10px;
+    text-align: center;
+    background: var(--papel-oscuro);
+    border: 3px dashed var(--tinta);
+    border-radius: 14px;
+    transition: transform 0.15s, background 0.15s;
+}
+/* Los hijos no reciben eventos: así dragleave no salta al pasar por encima de la imagen */
+.avatar-elegido *{
+    pointer-events: none;
+}
+.avatar-elegido img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.avatar-elegido.sobre{
+    background: var(--oro);
+    border-style: solid;
+    transform: scale(1.05);
+}
+.avatar-nombre{
+    display: block;
+    margin-top: 6px;
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+}
+.lista-avatares{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+.avatarImgItem{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--tinta);
+    cursor: grab;
+    transition: transform 0.15s;
+}
+.avatarImgItem:hover{
+    transform: translateY(-3px) rotate(-4deg);
+}
+.avatarImgItem.elegido{
+    box-shadow: 0 0 0 4px var(--oro), 0 0 0 7px var(--tinta);
+}
+
+/* ARTEFACTOS Y CINTURÓN */
+.lista-artefactos{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.artefacto{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: var(--borde);
+    border-radius: 10px;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.12s, box-shadow 0.12s, opacity 0.12s;
+}
+.artefacto:hover{
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0 var(--tinta);
+}
+.artefacto.elegido{
+    background: var(--papel-oscuro);
+    opacity: 0.5;
+}
+/* Dibujo del artefacto: imagen de img/artefactos/  */
+.artefacto-dibujo{
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+}
+.artefacto-icono{
+    font-family: var(--fuente-titulos);
+    font-size: 1.4rem;
+    line-height: 1;
+}
+.artefacto-img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.artefacto-texto{
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+.artefacto-texto strong{
+    font-size: 0.95rem;
+}
+.artefacto-texto small{
+    font-size: 0.8rem;
+    color: var(--texto-papel-suave);
+}
+.cinturon{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+    padding: 10px;
+    background: var(--tinta);
+    border-radius: 12px;
+    transition: box-shadow 0.15s;
+}
+.cinturon.sobre{
+    box-shadow: 0 0 0 4px var(--oro);
+}
+.cinturon.sobre *{
+    pointer-events: none;
+}
+.ranura{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 54px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    color: rgba(255, 246, 224, 0.7);
+    border: 2px dashed rgba(255, 201, 60, 0.6);
+    border-radius: 8px;
+}
+.ranura-llena{
+    justify-content: flex-start;
+    font-weight: 700;
+    text-align: left;
+    color: var(--tinta);
+    background: var(--oro);
+    border: 2px solid var(--oro);
+    cursor: pointer;
+    animation: encajar 0.25s ease-out;
+}
+.ranura-llena .artefacto-dibujo{
+    width: 2rem;
+    height: 2rem;
+}
+.ranura-llena .artefacto-icono{
+    font-size: 1.4rem;
+}
+.ranura-llena .quitar{
+    margin-left: auto;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+.ranura-llena:hover .quitar{
+    opacity: 1;
+}
+
+/* MENSAJE DE ERROR */
+.mensaje-error{
+    margin: 0 0 16px;
+    padding: 8px 12px;
+    font-weight: 700;
+    color: #8f0f1f;
+    background: #ffe1e4;
+    border: 2px solid var(--villano);
+    border-radius: 10px;
+}
+.mensaje-error:empty{
+    display: none;
+}
+
+/* BOTONES */
+.boton{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 26px;
+    font-family: var(--fuente-titulos);
+    font-size: 1.6rem;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    border: var(--borde);
+    border-radius: 12px;
+    box-shadow: 5px 5px 0 var(--tinta);
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.boton:hover{
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--tinta);
+}
+.boton:active{
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--tinta);
+}
+.boton-principal{
+    color: #ffffff;
+    background: var(--villano);
+    text-shadow: 2px 2px 0 var(--tinta);
+}
+.boton-secundario{
+    color: var(--tinta);
+    background: var(--papel);
+}
+.panel-formulario .boton-principal{
+    width: 100%;
+    font-size: 2rem;
+}
+
+/* COLUMNA LATERAL */
+.lateral{
+    display: grid;
+    gap: 28px;
+}
+.reglas{
+    margin: 0 0 16px;
+    padding-left: 20px;
+}
+.reglas li{
+    margin-bottom: 6px;
+}
+.txt-heroe{
+    color: var(--heroe);
+}
+.txt-villano{
+    color: var(--villano);
+}
+.subtitulo{
+    margin: 10px 0 8px;
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+.leyenda{
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.leyenda li{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    line-height: 1.25;
+    background: #ffffff;
+    border: 2px solid var(--tinta);
+    border-radius: 10px;
+}
+/* Dibujo de la trampa en la leyenda: miniatura de su carta o sus iniciales */
+.leyenda-dibujo{
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2.6rem;
+}
+.leyenda-icono{
+    font-family: var(--fuente-titulos);
+    font-size: 1.1rem;
+}
+.leyenda-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 2px solid var(--tinta);
+    border-radius: 4px;
+}
+
+/* SALÓN DE LA FAMA */
+.salon-fama{
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: puesto;
+}
+.salon-fama li{
+    display: grid;
+    grid-template-columns: 1.4em 40px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px 8px 8px;
+    background: #ffffff;
+    border: 2px solid var(--tinta);
+    border-radius: 10px;
+    counter-increment: puesto;
+}
+.salon-fama li::before{
+    content: counter(puesto);
+    font-family: var(--fuente-titulos);
+    font-size: 1.4rem;
+    text-align: center;
+}
+.salon-fama img{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.salon-fama li:first-child{
+    background: var(--oro);
+}
+.salon-fama .vacio{
+    display: block;
+    padding: 12px;
+    text-align: center;
+    color: var(--texto-papel-suave);
+    background: transparent;
+    border-style: dashed;
+}
+.salon-fama .vacio::before{
+    content: none;
+}
+.fama-nick{
+    display: block;
+    overflow: hidden;
+    font-weight: 700;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.fama-detalle{
+    display: block;
+    font-size: 0.78rem;
+    color: var(--texto-papel-suave);
+}
+.fama-puntos{
+    font-family: var(--fuente-titulos);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+/* PIE */
+.pie{
+    padding: 8px 16px 28px;
+    font-size: 0.82rem;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+/* ANIMACIONES (también las usa juego.html) */
+.sacudir{
+    animation: sacudir 0.4s;
+}
+@keyframes sacudir{
+    0%, 100%{ transform: translateX(0); }
+    20%{ transform: translateX(-6px); }
+    40%{ transform: translateX(6px); }
+    60%{ transform: translateX(-4px); }
+    80%{ transform: translateX(4px); }
+}
+@keyframes encajar{
+    from{ transform: scale(0.6); opacity: 0; }
+    to{ transform: scale(1); opacity: 1; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 860px){
+    .contenedor{
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 520px){
+    .panel{
+        padding: 18px 14px;
+    }
+    .lista-artefactos{
+        grid-template-columns: 1fr;
+    }
+    .zona-avatar{
+        grid-template-columns: 1fr;
+    }
+    .avatar-elegido{
+        margin: 0 auto;
+    }
+    .lista-avatares{
+        gap: 10px;
+    }
+    .opcion small{
+        font-size: 0.7rem;
+    }
+}
+
+/* Si el sistema pide menos movimiento, quitamos las animaciones */
+@media (prefers-reduced-motion: reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

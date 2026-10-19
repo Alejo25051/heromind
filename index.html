@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HeroMind: juego de memoria para emparejar a los héroes de Marvel con sus archienemigos">
+    <title>HeroMind · Héroes vs Villanos</title>
+    <link rel="icon" href="img/logo-heromind.svg" type="image/svg+xml">
+
+    <!-- Fuentes: Bangers (títulos estilo cómic) y Barlow (textos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- JS: datos del juego, localStorage del jugador y lógica de esta página -->
+    <script src="js/datosJuego.js"></script>
+    <script src="js/datosUsuario.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <!-- CABECERA CON EL LOGO -->
+    <header class="cabecera">
+        <div class="marca">
+            <img src="img/logo-heromind.svg" alt="" class="marca-emblema" width="72" height="72">
+            <div>
+                <p class="marca-nombre">Hero<span>Mind</span></p>
+                <p class="marca-lema">Héroes vs Villanos · Edición Marvel</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        <!-- FORMULARIO DE ENTRADA DEL JUGADOR -->
+        <form id="formEntrada" class="panel panel-formulario" action="juego.html" method="get" novalidate>
+            <h1 class="panel-titulo">Ficha del jugador</h1>
+            <p id="error" class="mensaje-error" role="alert"></p>
+
+            <!-- Nick de juego -->
+            <div class="campo">
+                <label for="nick" class="etiqueta">Nick de juego</label>
+                <input type="text" id="nick" name="nick" class="entrada-texto" maxlength="15" placeholder="Tu nombre de héroe" autocomplete="off">
+            </div>
+
+            <!-- Dificultad -->
+            <fieldset class="campo">
+                <legend class="etiqueta">Dificultad</legend>
+                <div class="opciones">
+                    <label class="opcion opcion-baja">
+                        <input type="radio" name="dificultad" value="baja">
+                        <span>Baja <small>más tiempo y tiradas</small></span>
+                    </label>
+                    <label class="opcion opcion-media">
+                        <input type="radio" name="dificultad" value="media">
+                        <span>Media <small>equilibrada</small></span>
+                    </label>
+                    <label class="opcion opcion-alta">
+                        <input type="radio" name="dificultad" value="alta">
+                        <span>Alta <small>puntos x2</small></span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- Número de tarjetas -->
+            <fieldset class="campo">
+                <legend class="etiqueta">Número de tarjetas</legend>
+                <div class="opciones">
+                    <label class="opcion">
+                        <input type="radio" name="tamano" value="9">
+                        <span>9 <small>3x3</small></span>
+                    </label>
+                    <label class="opcion">
+                        <input type="radio" name="tamano" value="16">
+                        <span>16 <small>4x4</small></span>
+                    </label>
+                    <label class="opcion">
+                        <input type="radio" name="tamano" value="25">
+                        <span>25 <small>5x5</small></span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- Avatar (Drag&Drop) -->
+            <fieldset class="campo">
+                <legend class="etiqueta">Avatar <small>arrástralo al recuadro o tócalo</small></legend>
+                <div class="zona-avatar">
+                    <div id="avatarZona" class="avatar-elegido">
+                        <img src="img/logo-heromind.svg" id="avatarImg" alt="Avatar elegido" width="110" height="110" draggable="false">
+                        <span id="avatarNombre" class="avatar-nombre"></span>
+                    </div>
+                    <!-- Los avatares se pintan desde app.js (salen de AVATARES en datosJuego.js) -->
+                    <div id="listaAvatares" class="lista-avatares"></div>
+                </div>
+            </fieldset>
+
+            <!-- Artefactos (Drag&Drop): se pintan desde app.js -->
+            <fieldset class="campo">
+                <legend class="etiqueta">Artefactos <small>elige 1 o 2 y arrástralos a tu cinturón</small></legend>
+                <div id="listaArtefactos" class="lista-artefactos"></div>
+                <!-- Cinturón: aquí se sueltan los artefactos elegidos (máximo 2) -->
+                <div id="cinturon" class="cinturon" role="group" aria-label="Cinturón de artefactos"></div>
+            </fieldset>
+
+            <button type="submit" class="boton boton-principal">¡A jugar!</button>
+        </form>
+
+        <!-- COLUMNA LATERAL: REGLAS Y SALÓN DE LA FAMA -->
+        <aside class="lateral">
+            <section class="panel panel-reglas">
+                <h2 class="panel-titulo">Cómo se juega</h2>
+                <ol class="reglas">
+                    <li>En cada tirada destapas dos cartas.</li>
+                    <li>Empareja a cada <strong class="txt-heroe">héroe</strong> con su <strong class="txt-villano">archienemigo</strong>: Thor con Loki, Spider-Man con Green Goblin, Rogue con Mystique…</li>
+                    <li>Las tiradas son limitadas. Las que te sobren al ganar suman puntos.</li>
+                    <li>Arrastra tus artefactos al tablero cuando los necesites.</li>
+                </ol>
+                <h3 class="subtitulo">Cartas trampa</h3>
+                <ul id="leyendaBombas" class="leyenda"></ul>
+            </section>
+
+            <section class="panel panel-fama">
+                <h2 class="panel-titulo">Salón de la fama</h2>
+                <ol id="salonFama" class="salon-fama"></ol>
+            </section>
+        </aside>
+    </main>
+
+    <footer class="pie">
+        <p>Proyecto académico sin ánimo de lucro · Los personajes pertenecen a Marvel.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,634 @@
+/*
+ * Estilos de la página de juego (juego.html)
+ * Se carga después de styles.css y reutiliza sus variables
+ */
+
+/* CABECERA DEL JUEGO */
+.cabecera-juego{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 24px;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 16px;
+}
+.marca-pequena .marca-emblema{
+    width: 44px;
+    height: 44px;
+    filter: drop-shadow(3px 3px 0 var(--tinta));
+}
+.marca-pequena .marca-nombre{
+    font-size: 2rem;
+}
+.jugador{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 16px 5px 5px;
+    color: var(--tinta);
+    background: var(--papel);
+    border: var(--borde);
+    border-radius: 999px;
+    box-shadow: 4px 4px 0 var(--tinta);
+}
+.jugador img{
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border: 2px solid var(--tinta);
+    border-radius: 50%;
+}
+.jugador-nick{
+    display: block;
+    max-width: 14ch;
+    overflow: hidden;
+    font-family: var(--fuente-titulos);
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    line-height: 1.05;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.jugador-dificultad{
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--texto-papel-suave);
+}
+.marcadores{
+    display: flex;
+    gap: 10px;
+    margin: 0 0 0 auto;
+    padding: 0;
+    list-style: none;
+}
+.marcador{
+    min-width: 88px;
+    padding: 6px 12px;
+    text-align: center;
+    background: var(--fondo-claro);
+    border: var(--borde);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--tinta);
+}
+.marcador-etiqueta{
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--texto-suave);
+}
+.marcador-valor{
+    display: block;
+    font-family: var(--fuente-titulos);
+    font-size: 1.9rem;
+    letter-spacing: 1px;
+    line-height: 1;
+    color: var(--oro);
+}
+.marcador.critico{
+    background: var(--villano);
+    animation: latido 1s infinite;
+}
+.marcador.critico .marcador-etiqueta,
+.marcador.critico .marcador-valor{
+    color: #ffffff;
+}
+
+/* DISTRIBUCIÓN DE LA PÁGINA */
+.zona-juego{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-areas:
+        "tablero artefactos"
+        "tablero leyenda";
+    grid-template-rows: auto 1fr;
+    gap: 22px 28px;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 8px 16px 32px;
+    align-items: start;
+}
+.zona-tablero{
+    grid-area: tablero;
+}
+.panel-artefactos{
+    grid-area: artefactos;
+    padding: 18px;
+    box-shadow: 7px 7px 0 var(--oro);
+}
+.panel-leyenda{
+    grid-area: leyenda;
+    padding: 18px;
+}
+.panel-artefactos .panel-titulo,
+.panel-leyenda .panel-titulo{
+    font-size: 1.5rem;
+}
+.ayuda{
+    margin: -4px 0 12px;
+    font-size: 0.85rem;
+    color: var(--texto-papel-suave);
+}
+
+/* MENSAJE SOBRE EL TABLERO */
+.mensaje-juego{
+    width: fit-content;
+    max-width: 100%;
+    min-height: 2.6em;
+    margin: 0 auto 14px;
+    padding: 8px 18px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--tinta);
+    background: var(--papel);
+    border: var(--borde);
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 var(--tinta);
+}
+.mensaje-juego.exito{
+    background: #c9f7f0;
+}
+.mensaje-juego.alerta{
+    background: var(--oro);
+}
+.mensaje-juego.peligro{
+    color: #ffffff;
+    background: var(--villano);
+}
+
+/* TABLERO */
+.tablero{
+    --hueco: clamp(6px, 1.4vw, 12px);
+    /*
+     * --u es el 1 % del ancho de una carta. juego.js lo calcula (ajustarMedidasCartas)
+     * al pintar el tablero y al cambiar el tamaño de la ventana.
+     * Las medidas de dentro de la carta se escriben como calc(var(--u) * N),
+     * así el nombre, los marcos y los textos crecen o se achican con la carta.
+     */
+    --u: 1px;
+    display: grid;
+    gap: var(--hueco);
+    /* Ancho limitado también por la altura de la pantalla para que quepa entero */
+    width: min(100%, 640px, calc((100vh - 190px) * 0.75));
+    min-width: min(100%, 300px);
+    margin: 0 auto;
+    padding: var(--hueco);
+    background: var(--fondo-claro);
+    border: var(--borde);
+    border-radius: 16px;
+    box-shadow: 8px 8px 0 var(--tinta);
+    transition: box-shadow 0.15s, background 0.15s;
+}
+/* Resaltado al arrastrar un artefacto encima */
+.tablero.sobre{
+    background: #2a3a6a;
+    box-shadow: 0 0 0 5px var(--oro), 8px 8px 0 var(--tinta);
+}
+
+/* CARTAS */
+.carta{
+    position: relative;
+    aspect-ratio: 3 / 4;
+    padding: 0;
+    color: #ffffff;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    perspective: 800px;
+    transition: transform 0.15s;
+}
+.carta:not(:disabled):hover{
+    transform: translateY(-4px);
+}
+.carta:disabled{
+    cursor: default;
+}
+.carta-interior{
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.3, 1.2);
+}
+/* Carta destapada, Eye of Agamotto o final de partida: se ve la cara frontal */
+.carta.volteada .carta-interior,
+.tablero.espiando .carta .carta-interior,
+.tablero.revelado .carta .carta-interior{
+    transform: rotateY(180deg);
+}
+.cara{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    border: var(--borde);
+    border-radius: 10px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Dorso: rayas diagonales con el emblema */
+.cara-trasera{
+    background:
+        url("../img/logo-heromind.svg") center / 55% no-repeat,
+        repeating-linear-gradient(45deg, #1d2d5c 0 8px, #16224a 8px 16px);
+    box-shadow: inset 0 0 0 3px rgba(255, 201, 60, 0.5);
+}
+.carta:not(:disabled):hover .cara-trasera{
+    filter: brightness(1.25);
+}
+
+/* CARA FRONTAL: marco del color del bando + ventana con el arte a carta completa.*/
+.cara-frontal{
+    display: block;
+    padding: calc(var(--u) * 3.2);
+    color: #ffffff;
+    text-align: left;
+    transform: rotateY(180deg);
+    background: linear-gradient(150deg, #f6e7b4, var(--oro) 35%, #b8860b);
+}
+.cara-frontal.heroe{
+    background: linear-gradient(150deg, var(--heroe-claro), var(--heroe) 45%, #0f3b8c);
+}
+.cara-frontal.villano{
+    background: linear-gradient(150deg, #ff6b78, var(--villano) 45%, #6a0f1f);
+}
+.cara-frontal.trampa{
+    background: linear-gradient(150deg, #8a6bd1, var(--villano-oscuro) 45%, #24113d);
+}
+.carta-ventana{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: calc(var(--u) * 2.4);
+    box-shadow: 0 0 0 calc(var(--u) * 0.8) rgba(11, 11, 18, 0.85);
+}
+/* Fondo de la ventana según el tipo de carta (se ve cuando no hay imagen) */
+.heroe .carta-ventana{
+    background: radial-gradient(circle at 50% 50%, var(--heroe-claro), var(--heroe) 55%, #0f3b8c);
+}
+.villano .carta-ventana{
+    background: radial-gradient(circle at 50% 50%, #ff6b78, var(--villano) 50%, var(--villano-oscuro));
+}
+.trampa-muerte .carta-ventana{
+    background: radial-gradient(circle at 50% 50%, #50505f, #15151c);
+}
+.trampa-teseracto .carta-ventana{
+    background: radial-gradient(circle at 50% 52%, #9bf6ff, #2a7de1 45%, #0b1f4d);
+}
+.trampa-guante .carta-ventana{
+    background: radial-gradient(circle at 50% 50%, #ffe9a8, var(--oro) 50%, #8a5a00);
+}
+
+/* Arte: ocupa toda la ventana */
+.carta-retrato{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    place-items: center;
+    /* Las iniciales y los íconos quedan un poco más abajo del nombre */
+    padding-top: calc(var(--u) * 6);
+}
+.con-imagen .carta-retrato{
+    padding: 0;
+}
+.carta-imagen{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Si la imagen no es 3:4 se recorta desde arriba para no perder la cara */
+    object-position: center top;
+}
+.carta-iniciales{
+    display: grid;
+    place-items: center;
+    width: calc(var(--u) * 50);
+    aspect-ratio: 1;
+    font-family: var(--fuente-titulos);
+    font-size: calc(var(--u) * 21);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.16);
+    border: calc(var(--u) * 1.5) solid rgba(255, 255, 255, 0.75);
+    border-radius: 50%;
+    text-shadow: calc(var(--u) * 1.2) calc(var(--u) * 1.2) 0 var(--tinta);
+}
+
+/* Nombre arriba: franja del color del bando que se desvanece hacia el arte */
+.carta-cabecera{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 0.6);
+    padding: calc(var(--u) * 3.5) calc(var(--u) * 4.5) calc(var(--u) * 11);
+    background: linear-gradient(rgba(11, 11, 18, 0.9), rgba(11, 11, 18, 0.55) 60%, transparent);
+}
+.heroe .carta-cabecera{
+    background: linear-gradient(rgba(15, 59, 140, 0.95), rgba(15, 59, 140, 0.6) 60%, transparent);
+}
+.villano .carta-cabecera{
+    background: linear-gradient(rgba(120, 16, 40, 0.95), rgba(120, 16, 40, 0.6) 60%, transparent);
+}
+.carta-bando{
+    font-size: calc(var(--u) * 5.5);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.85;
+}
+.carta-nombre{
+    font-family: var(--fuente-titulos);
+    font-size: calc(var(--u) * 12.5);
+    letter-spacing: 0.03em;
+    line-height: 0.95;
+    text-shadow: calc(var(--u) * 0.7) calc(var(--u) * 0.7) 0 var(--tinta);
+}
+
+/* Rival abajo: pastilla sobre una franja oscura */
+.carta-pie{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    padding: calc(var(--u) * 10) calc(var(--u) * 4) calc(var(--u) * 4);
+    background: linear-gradient(transparent, rgba(11, 11, 18, 0.85));
+}
+.carta-rival{
+    max-width: 100%;
+    padding: calc(var(--u) * 1.2) calc(var(--u) * 3.5);
+    overflow: hidden;
+    font-size: calc(var(--u) * 7);
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: rgba(255, 255, 255, 0.14);
+    border: calc(var(--u) * 0.5) solid rgba(255, 255, 255, 0.5);
+    border-radius: 99px;
+}
+.carta-vs{
+    margin-right: calc(var(--u) * 0.8);
+    font-family: var(--fuente-titulos);
+    letter-spacing: 0.05em;
+    color: var(--oro);
+}
+
+/* En cartas muy pequeñas (5x5 en el celular) solo dejamos el nombre.
+   juego.js pone la clase cartas-pequenas al tablero cuando una carta mide menos de 77px de ancho */
+.tablero.cartas-pequenas .carta-bando,
+.tablero.cartas-pequenas .carta-pie{
+    display: none;
+}
+.tablero.cartas-pequenas .carta-cabecera{
+    padding: calc(var(--u) * 3) calc(var(--u) * 3.5) calc(var(--u) * 9);
+}
+.tablero.cartas-pequenas .carta-nombre{
+    font-size: calc(var(--u) * 14);
+}
+
+/* ESTADOS DE LAS CARTAS */
+.carta.emparejada{
+    animation: celebrar 0.6s ease-out;
+}
+.carta.emparejada .cara-frontal{
+    border-color: var(--oro);
+    box-shadow: 0 0 18px 4px rgba(255, 201, 60, 0.7);
+}
+.carta.usada .cara-frontal{
+    filter: grayscale(0.85) brightness(0.7);
+}
+.carta.fallo{
+    animation: sacudir 0.4s;
+}
+.carta.explosion .cara-frontal{
+    animation: explotar 0.8s ease-out forwards;
+}
+.tablero.revelado .carta:not(.volteada) .cara-frontal{
+    filter: brightness(0.55) saturate(0.6);
+}
+.tablero.barajando .carta:not(.volteada){
+    animation: barajar 0.6s ease-in-out;
+}
+
+/* ARTEFACTOS EN EL JUEGO */
+.artefactos-juego{
+    display: grid;
+    gap: 10px;
+}
+.artefacto-juego{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: var(--tinta);
+    background: #ffffff;
+    border: var(--borde);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--tinta);
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.12s;
+}
+.artefacto-juego:hover{
+    transform: translateY(-2px) rotate(-1deg);
+}
+.artefacto-juego em{
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--heroe);
+}
+.artefacto-juego.pasivo{
+    background: #e3f1ff;
+    cursor: default;
+}
+.artefacto-juego.gastado{
+    box-shadow: none;
+    opacity: 0.45;
+    filter: grayscale(1);
+    cursor: not-allowed;
+}
+.artefacto-juego.pasivo:hover,
+.artefacto-juego.gastado:hover{
+    transform: none;
+}
+.artefacto-juego.gastado em{
+    color: var(--texto-papel-suave);
+}
+
+/* VENTANA DE FIN DE PARTIDA */
+.fin-juego{
+    width: min(92vw, 440px);
+    padding: 26px 22px;
+    text-align: center;
+    color: var(--tinta);
+    background: var(--papel);
+    border: var(--borde);
+    border-radius: 16px;
+    box-shadow: 10px 10px 0 var(--oro);
+}
+.fin-juego.derrota{
+    box-shadow: 10px 10px 0 var(--villano);
+}
+.fin-juego::backdrop{
+    background: rgba(8, 10, 20, 0.72);
+    backdrop-filter: blur(3px);
+}
+.fin-juego[open]{
+    animation: encajar 0.3s ease-out;
+}
+.fin-icono{
+    width: 72px;
+    height: 72px;
+    margin: 0 auto;
+    filter: drop-shadow(4px 4px 0 var(--tinta));
+}
+.fin-juego.derrota .fin-icono{
+    filter: grayscale(1) drop-shadow(4px 4px 0 var(--tinta));
+}
+.fin-titulo{
+    margin: 6px 0 4px;
+    font-family: var(--fuente-titulos);
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+.fin-motivo{
+    margin: 0 0 12px;
+    font-weight: 600;
+}
+.fin-record-nuevo{
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 2px 12px;
+    font-weight: 700;
+    background: var(--oro);
+    border: 2px solid var(--tinta);
+    border-radius: 99px;
+    transform: rotate(-2deg);
+}
+.fin-record-nuevo[hidden]{
+    display: none;
+}
+.fin-resumen{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 0 0 10px;
+}
+.fin-resumen div{
+    padding: 8px;
+    background: #ffffff;
+    border: 2px solid var(--tinta);
+    border-radius: 10px;
+}
+.fin-resumen dt{
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--texto-papel-suave);
+}
+.fin-resumen dd{
+    margin: 0;
+    font-family: var(--fuente-titulos);
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+.fin-bonus{
+    min-height: 1.2em;
+    margin: 0 0 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--texto-papel-suave);
+}
+.fin-botones{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+.fin-botones .boton{
+    padding: 10px 18px;
+    font-size: 1.35rem;
+}
+
+/* ANIMACIONES DEL JUEGO */
+@keyframes latido{
+    0%, 100%{ transform: scale(1); }
+    50%{ transform: scale(1.06); }
+}
+@keyframes celebrar{
+    0%{ transform: scale(1); }
+    40%{ transform: scale(1.1) rotate(-2deg); }
+    100%{ transform: scale(1); }
+}
+@keyframes explotar{
+    0%{ transform: rotateY(180deg) scale(1); }
+    40%{ transform: rotateY(180deg) scale(1.2); box-shadow: 0 0 30px 12px rgba(214, 40, 57, 0.9); }
+    100%{ transform: rotateY(180deg) scale(1); box-shadow: 0 0 18px 6px rgba(214, 40, 57, 0.8); }
+}
+@keyframes barajar{
+    0%, 100%{ transform: none; }
+    30%{ transform: scale(0.85) rotate(-8deg); }
+    65%{ transform: scale(0.85) rotate(8deg); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px){
+    .zona-juego{
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "artefactos"
+            "tablero"
+            "leyenda";
+        grid-template-rows: auto;
+    }
+    .tablero{
+        width: min(100%, 560px);
+    }
+    .artefactos-juego{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .artefacto-juego small{
+        display: none;
+    }
+    .panel-artefactos .ayuda{
+        margin-bottom: 10px;
+    }
+}
+@media (max-width: 720px){
+    .marcadores{
+        width: 100%;
+        margin: 0;
+    }
+    .marcador{
+        flex: 1;
+        min-width: 0;
+    }
+}
+@media (max-width: 420px){
+    .marca-pequena .marca-nombre{
+        display: none;
+    }
+    .artefactos-juego{
+        grid-template-columns: 1fr;
+    }
+}

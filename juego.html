@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeroMind · Partida</title>
+    <link rel="icon" href="img/logo-heromind.svg" type="image/svg+xml">
+
+    <!-- Fuentes: Bangers (títulos estilo cómic) y Barlow (textos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos: los generales y los del juego -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/stylesjuego.css">
+
+    <!-- JS: datos del juego, localStorage del jugador y lógica del juego -->
+    <script src="js/datosJuego.js"></script>
+    <script src="js/datosUsuario.js"></script>
+    <script src="js/juego.js"></script>
+</head>
+<body>
+    <!-- CABECERA: JUGADOR Y MARCADORES -->
+    <header class="cabecera-juego">
+        <a href="index.html" class="marca marca-pequena" title="Volver a la ficha del jugador">
+            <img src="img/logo-heromind.svg" alt="" class="marca-emblema" width="44" height="44">
+            <span class="marca-nombre">Hero<span>Mind</span></span>
+        </a>
+
+        <div class="jugador">
+            <img src="img/logo-heromind.svg" id="avatarImg" alt="Avatar del jugador" width="52" height="52">
+            <div>
+                <span id="nick" class="jugador-nick"></span>
+                <span id="dificultadTxt" class="jugador-dificultad"></span>
+            </div>
+        </div>
+
+        <ul class="marcadores">
+            <li class="marcador">
+                <span class="marcador-etiqueta">Puntos</span>
+                <span id="puntos" class="marcador-valor">0</span>
+            </li>
+            <li class="marcador" id="marcadorTiradas">
+                <span class="marcador-etiqueta">Tiradas</span>
+                <span id="tiradas" class="marcador-valor">0</span>
+            </li>
+            <li class="marcador">
+                <span class="marcador-etiqueta">Parejas</span>
+                <span id="parejas" class="marcador-valor">0/0</span>
+            </li>
+        </ul>
+    </header>
+
+    <main class="zona-juego">
+        <!-- ARTEFACTOS DEL JUGADOR (se pintan desde juego.js) -->
+        <section class="panel panel-artefactos">
+            <h2 class="panel-titulo">Tus artefactos</h2>
+            <p class="ayuda">Arrástralos al tablero (o tócalos) para usarlos. Cada uno sirve una vez.</p>
+            <div id="artefactosJuego" class="artefactos-juego"></div>
+        </section>
+
+        <!-- TABLERO DE CARTAS (se pinta desde juego.js) -->
+        <section class="zona-tablero">
+            <!-- Título principal de la página: oculto en pantalla, lo leen los lectores de pantalla -->
+            <h1 class="solo-lectores">Tablero de HeroMind</h1>
+            <p id="mensaje" class="mensaje-juego" aria-live="polite">Busca a cada héroe con su archienemigo</p>
+            <div id="tablero" class="tablero"></div>
+        </section>
+
+        <!-- LEYENDA DE CARTAS TRAMPA -->
+        <section class="panel panel-leyenda">
+            <h2 class="panel-titulo">Cartas trampa</h2>
+            <ul id="leyendaBombas" class="leyenda"></ul>
+        </section>
+    </main>
+
+    <!-- VENTANA DE FIN DE PARTIDA -->
+    <dialog id="finJuego" class="fin-juego">
+        <!-- Logo del juego: en color si ganas y en gris si pierdes (clase derrota de la ventana) -->
+        <img src="img/logo-heromind.svg" class="fin-icono" alt="" width="72" height="72">
+        <!-- Texto por defecto: juego.js lo cambia por ¡Victoria! o Derrota -->
+        <h2 id="finTitulo" class="fin-titulo">Fin de la partida</h2>
+        <p id="finMotivo" class="fin-motivo"></p>
+        <p id="finRecordNuevo" class="fin-record-nuevo" hidden>¡Nuevo récord personal!</p>
+        <dl class="fin-resumen">
+            <div>
+                <dt>Puntos</dt>
+                <dd id="finPuntos"></dd>
+            </div>
+            <div>
+                <dt>Tiradas usadas</dt>
+                <dd id="finTiradas"></dd>
+            </div>
+            <div>
+                <dt>Parejas</dt>
+                <dd id="finParejas"></dd>
+            </div>
+            <div>
+                <dt>Tu récord</dt>
+                <dd id="finRecord"></dd>
+            </div>
+        </dl>
+        <p id="finBonus" class="fin-bonus"></p>
+        <div class="fin-botones">
+            <button type="button" id="botonRepetir" class="boton boton-principal">Jugar otra vez</button>
+            <a href="index.html" class="boton boton-secundario">Cambiar ficha</a>
+        </div>
+    </dialog>
+</body>
+</html>
